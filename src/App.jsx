@@ -1,16 +1,8 @@
 import "./App.css";
-import { NavBarComponent } from "./components/NavBarComponent";
-import { IndexPage } from "./page/IndexPage";
+import { AppRouter } from "./router/AppRouter";
 
 function App() {
-  return (
-    <>
-      <div className="">
-        <NavBarComponent />
-        <IndexPage />
-      </div>
-    </>
-  );
+  return <AppRouter />;
 }
 
 export default App;
