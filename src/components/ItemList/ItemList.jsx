@@ -25,32 +25,39 @@ export const ItemList = ({ productos }) => {
   }, [productos]);
 
   return (
-    <section className="container mx-auto py-20">
-      <h3 className="text-center text-4xl text-blue-800 font-semibold">
-        Recomendaciones
-      </h3>
+    <>
+      {productos.length == 0 ? (
+        <h3 className="text-center text-4xl text-blue-800 font-semibold">
+          No hay autos disponibles
+        </h3>
+      ) : (
+        <div>
+          <h3 className="text-center text-4xl text-blue-800 font-semibold">
+            Recomendaciones
+          </h3>
+          <div className="mt-8 grid grid-cols-1 xl:grid-cols-2 justify-items-center gap-5 px-15">
+            {paginas[paginaActual - 1]?.map((item) => (
+              <ItemCard key={item.id} item={item} />
+            ))}
+          </div>
 
-      <div className="mt-8 grid grid-cols-1 xl:grid-cols-2 justify-items-center gap-5 px-15">
-        {paginas[paginaActual - 1]?.map((item) => (
-          <ItemCard key={item.item_id} item={item} />
-        ))}
-      </div>
-
-      <div className="flex justify-center mt-8 gap-2 flex-wrap">
-        {paginas.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setPaginaActual(index + 1)}
-            className={`px-4 py-2 rounded text-sm font-medium ${
-              paginaActual === index + 1
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
-    </section>
+          <div className="flex justify-center mt-8 gap-2 flex-wrap">
+            {paginas.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setPaginaActual(index + 1)}
+                className={`px-4 py-2 rounded text-sm font-medium ${
+                  paginaActual === index + 1
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

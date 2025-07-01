@@ -4,7 +4,6 @@ import { IndexPage } from "../page/IndexPage";
 import { ProductPage } from "../page/ProductPage";
 import { FooterComponent } from "../components/FooterComponent";
 import { AdminPage } from "../page/AdminPage";
-import { ListarProductos } from "../components/ListarProductos/ListarProductos";
 import { AddProduct } from "../components/AddProduct/AddProduct";
 import { ReservationDetailContainer } from "../components/ReservationDetailContainer/ReservationDetailContainer";
 import { LoginScreen } from "../components/LoginScreen/LoginScreen";
@@ -12,6 +11,7 @@ import { RegisterScreen } from "../components/RegisterScreen/RegisterScreen";
 import { AddCategory } from "../components/AddCategory/AddCategory";
 import { ProtectedRoute } from "./ProtectedRoute";
 import NoMobile from "../components/ProtectedAdmin/NoMobile";
+import { ProductList } from "../components/ProductList/ProductList";
 
 export const AppRouter = () => {
   return (
@@ -38,7 +38,7 @@ export const AppRouter = () => {
             path="/administracion/listarProductos"
             element={
               <ProtectedRoute>
-                <ListarProductos />
+                <ProductList />
               </ProtectedRoute>
             }
           ></Route>
