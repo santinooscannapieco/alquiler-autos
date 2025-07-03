@@ -23,7 +23,7 @@ export const AppRouter = () => {
           <Route path="/" element={<IndexPage />}></Route>
           <Route path="/items/:itemId" element={<ProductPage />}></Route>
           <Route
-            path="/reservar"
+            path="/reservar/:itemId"
             element={<ReservationDetailContainer />}
           ></Route>
           <Route

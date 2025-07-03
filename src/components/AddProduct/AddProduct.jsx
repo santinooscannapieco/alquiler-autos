@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { BtnGoBack } from "../buttons/BtnGoBack";
 import { getData, postData } from "../../services/api";
+import { ConfirmationMessageAdd } from "../ConfirmationMessage/ConfirmationMessageAdd";
+import { Loader } from "../Loader/Loader";
 
 export const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -12,10 +14,13 @@ export const AddProduct = () => {
     category_id: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [alertCompleteForm, setAlertCompleteForm] = useState(false);
   const [images, setImages] = useState([]);
   const [previewImgs, setPreviewImgs] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [characteristicsInputs, setCharacteristicsInputs] = useState([""]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const loadCategorias = async () => {
     try {
@@ -30,6 +35,13 @@ export const AddProduct = () => {
     loadCategorias();
   }, []);
 
+  const handleDeleteInput = (index) => {
+    const nuevoArray = [...characteristicsInputs];
+    nuevoArray.splice(index, 1);
+
+    setCharacteristicsInputs(nuevoArray);
+  };
+
   const handleAddInput = (e) => {
     e.preventDefault();
     setCharacteristicsInputs((prev) => [...prev, ""]);
@@ -38,7 +50,6 @@ export const AddProduct = () => {
   const handleChangeCharacteristics = (index, value) => {
     const updated = [...characteristicsInputs];
     updated[index] = value;
-    console.log(updated);
     setCharacteristicsInputs(updated);
   };
 
@@ -59,7 +70,6 @@ export const AddProduct = () => {
 
       setPreviewImgs((prev) => [...prev, ...newPreviews]);
     } else if (name === "category_id") {
-      console.log(value, formData);
       setFormData((prev) => ({
         ...prev,
         category_id: parseInt(value),
@@ -81,9 +91,46 @@ export const AddProduct = () => {
     setPreviewImgs(nuevasPreviews);
   };
 
-  const handleSubmit = async (e) => {
+  const checkForm = (e) => {
     e.preventDefault();
 
+    const checkCharacteristics = characteristicsInputs.every((ch) => ch !== "");
+
+    console.log("name:", formData.name);
+    console.log("description:", formData.description);
+    console.log("carBrand:", formData.carBrand);
+    console.log("pricePerHour:", formData.pricePerHour);
+    console.log("category_id:", formData.category_id);
+    console.log("characteristics:", formData.characteristics);
+    console.log("checkCharacteristics:", checkCharacteristics);
+
+    if (
+      formData.name != null &&
+      formData.description != null &&
+      formData.carBrand != null &&
+      formData.pricePerHour != 0 &&
+      checkCharacteristics != false &&
+      formData.category_id != null
+    ) {
+      setShowConfirmation(true);
+    } else {
+      setAlertCompleteForm(true);
+    }
+  };
+
+  const handleConfirmationClose = async (confirmed) => {
+    setShowConfirmation(false);
+    if (!confirmed) return;
+
+    try {
+      handleSubmit();
+    } catch (err) {
+      console.error("Error al crear:", err.message);
+      alert("No se pudo crear el ítem");
+    }
+  };
+
+  const handleSubmit = async () => {
     const finalFormData = {
       ...formData,
       characteristics: characteristicsInputs,
@@ -97,22 +144,31 @@ export const AddProduct = () => {
     });
 
     try {
-      console.log(formData.category_id);
+      setLoading(true);
       const res = await postData("/autos", formToReturn);
-      setFormData({
-        name: "",
-        description: "",
-        carBrand: "",
-        pricePerHour: 0,
-        characteristics: [],
-        category_id: "",
-      });
-      setImages([]);
-      setPreviewImgs([]);
+      resetForm();
       console.log("Auto creado con imágenes:", res);
+      // Se puede agregar un alert de creado
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // Reseteo todo el formulario
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      carBrand: "",
+      pricePerHour: 0,
+      characteristics: [],
+      category_id: "",
+    });
+    setImages([]);
+    setPreviewImgs([]);
+    setCharacteristicsInputs([""]);
+    setLoading(false);
+    setAlertCompleteForm(false);
   };
 
   return (
@@ -124,7 +180,12 @@ export const AddProduct = () => {
           Agregar producto
         </h1>
 
-        <form id="form" onSubmit={handleSubmit} className="space-y-4">
+        <div /*  onSubmit={handleSubmit} */ className="space-y-4">
+          {alertCompleteForm && (
+            <h3 className="text-lg text-red-700">
+              *Por favor complete todos los campos antes de crear el producto
+            </h3>
+          )}
           <div>
             <label className="block mb-1 font-semibold">
               Nombre del producto
@@ -197,28 +258,33 @@ export const AddProduct = () => {
             />
           </div>
           <div>
-            <label className="block mb-1 font-semibold">
-              Agregar características
-            </label>
-            <div className="flex gap-2">
+            <p className="block mb-1 font-semibold">Agregar características</p>
+            <div className="flex flex-col gap-2">
               {characteristicsInputs.map((value, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  className="w-full border px-3 py-2 rounded"
-                  value={value}
-                  onChange={(e) =>
-                    handleChangeCharacteristics(index, e.target.value)
-                  }
-                  required
-                />
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    className="w-full border px-3 py-2 rounded"
+                    value={value}
+                    onChange={(e) =>
+                      handleChangeCharacteristics(index, e.target.value)
+                    }
+                    required
+                  />
+                  <button
+                    onClick={() => handleDeleteInput(index)}
+                    className="text-white p-2 rounded bg-black hover:bg-blue-900 cursor-pointer"
+                  >
+                    X
+                  </button>
+                </div>
               ))}
 
               <button
                 onClick={handleAddInput}
                 className="text-white p-2 rounded bg-black hover:bg-blue-900 cursor-pointer"
               >
-                Agregar
+                Más inputs
               </button>
             </div>
           </div>
@@ -257,21 +323,23 @@ export const AddProduct = () => {
           )}
 
           <button
-            type="submit"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+            onClick={checkForm}
           >
-            Agregar Producto
+            Crear producto
           </button>
-        </form>
+        </div>
+
+        {loading && <Loader />}
+
+        {showConfirmation && (
+          <ConfirmationMessageAdd
+            title="¿Seguro que querés crear este item?"
+            itemSelected={formData}
+            onClose={handleConfirmationClose}
+          />
+        )}
       </div>
     </>
   );
 };
-
-/* TRAER VALOR DEL SELECT
-function mostrarValor() {
-  const selectElement = document.getElementById('frutas');
-  const valorSeleccionado = selectElement.value;
-  document.getElementById('valorSeleccionado').textContent = 'Has seleccionado: ' + valorSeleccionado;
-}
-*/

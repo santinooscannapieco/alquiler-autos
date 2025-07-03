@@ -6,10 +6,15 @@ export const getData = async (endpoint) => {
   return res.json();
 };
 
-export const postData = async (endpoint, formData) => {
+export const postData = async (endpoint, data) => {
+  const isFormData = data instanceof FormData;
+
   const response = await fetch(`${API_BASE}${endpoint}`, {
     method: "POST",
-    body: formData,
+    headers: isFormData
+      ? undefined
+      : { "Content-Type": "application/json" },
+    body: isFormData ? data : JSON.stringify(data),
   });
 
   if (!response.ok) {
@@ -32,7 +37,7 @@ export const putData = async (endpoint, data) => {
     throw new Error(`Error al hacer PUT: ${response.statusText}`);
   }
 
-  return await response.json();
+  return await response.text();
 };
 
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BtnGoBack } from "../buttons/BtnGoBack";
-import { ConfirmationMessage } from "../ConfirmationMessage/ConfirmationMessage";
+import { ConfirmationMessageDelete } from "../ConfirmationMessage/ConfirmationMessageDelete";
 import { deleteData, getData } from "../../services/api";
 
 export const ProductList = () => {
@@ -27,7 +27,6 @@ export const ProductList = () => {
     loadProductos();
   }, []);
 
-  // 🗑 Eliminar producto
   const handleConfirmationClose = async (confirmed) => {
     setShowConfirmation(false);
     if (!confirmed || selectedId == null) return;
@@ -90,7 +89,11 @@ export const ProductList = () => {
           </tbody>
         </table>
         {showConfirmation && (
-          <ConfirmationMessage onClose={handleConfirmationClose} />
+          <ConfirmationMessageDelete
+            title="¿Seguro que querés eliminar?"
+            itemSelected={productos.find((prod) => prod.id == selectedId)}
+            onClose={handleConfirmationClose}
+          />
         )}
       </div>
     </>
