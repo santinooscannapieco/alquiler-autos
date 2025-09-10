@@ -322,10 +322,7 @@ export const AddProduct = () => {
             </div>
           )}
 
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-            onClick={checkForm}
-          >
+          <button className="btn" onClick={checkForm}>
             Crear producto
           </button>
         </div>

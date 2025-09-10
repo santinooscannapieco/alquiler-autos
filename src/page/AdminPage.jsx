@@ -1,36 +1,56 @@
 import { Link } from "react-router";
+import { BtnAdmin } from "../components/buttons/BtnAdmin";
+import {
+  Inventory2,
+  AddBox,
+  BarChart,
+  CreateNewFolder,
+  Group,
+} from "@mui/icons-material";
 
 export const AdminPage = () => {
+  const iconFontSize = 80;
+
   return (
     <>
-      <div className="container mx-auto py-30 text-center">
-        <h1 className="text-4xl text-blue-800 font-semibold mb-5">
-          Panel de Administración
+      <section className="section place-items-center">
+        <h1 className="text-4xl text-blue-700 font-bold mb-10">
+          PANEL DE ADMINISTRACIÓN
         </h1>
-        <h3 className="text-xl mb-5">Funcionalidades:</h3>
-        <div className="flex justify-center gap-5">
+
+        <div className="flex gap-5">
           <Link to={`/administracion/listarProductos`}>
-            <button className="text-white bg-blue-500 hover:bg-blue-300 p-4 rounded-2xl cursor-pointer">
-              Lista de Productos
-            </button>
+            <BtnAdmin
+              text="Productos"
+              icono={<Inventory2 sx={{ fontSize: iconFontSize }} />}
+            />
           </Link>
           <Link to={`/administracion/agregarProducto`}>
-            <button className="text-white bg-blue-500 hover:bg-blue-300 p-4 rounded-2xl cursor-pointer">
-              Agregar Producto
-            </button>
+            <BtnAdmin
+              text="Agregar producto"
+              icono={<AddBox sx={{ fontSize: iconFontSize }} />}
+            />
           </Link>
           <Link to={`/administracion/agregarCategoria`}>
-            <button className="text-white bg-blue-500 hover:bg-blue-300 p-4 rounded-2xl cursor-pointer">
-              Agregar Categoría
-            </button>
+            <BtnAdmin
+              text="Agregar Categoría"
+              icono={<CreateNewFolder sx={{ fontSize: iconFontSize }} />}
+            />
           </Link>
           <Link to={`/administracion`}>
-            <button className="text-white bg-blue-500 hover:bg-blue-300 p-4 rounded-2xl cursor-pointer">
-              Boton 4
-            </button>
+            <BtnAdmin
+              text="Ventas"
+              icono={<BarChart sx={{ fontSize: iconFontSize }} />}
+            />
+          </Link>
+          <Link to={`/administracion`}>
+            <BtnAdmin
+              text="Usuarios"
+              icono={<Group sx={{ fontSize: iconFontSize }} />}
+            />
           </Link>
         </div>
-      </div>
+      </section>
     </>
   );
 };

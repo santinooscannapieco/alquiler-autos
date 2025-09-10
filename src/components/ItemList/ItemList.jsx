@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ItemCard } from "../ItemCard/ItemCard";
 import { getRandomProducts } from "../../js/getRandomProducts";
 
-export const ItemList = ({ productos }) => {
+export const ItemList = ({ productos, categoryId }) => {
   const productosPorPagina = 10;
   const [paginas, setPaginas] = useState([]);
   const [paginaActual, setPaginaActual] = useState(1);

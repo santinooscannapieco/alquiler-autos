@@ -143,7 +143,7 @@ export const AddCategory = () => {
 
   return (
     <>
-      <div className="container mx-auto py-30">
+      <div className="section">
         <BtnGoBack backTo={"/administracion"} />
 
         <h1 className="text-2xl text-blue-800 font-semibold my-5">
@@ -170,10 +170,7 @@ export const AddCategory = () => {
             />
           </div>
 
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-            onClick={handleAddClick}
-          >
+          <button className="btn" onClick={handleAddClick}>
             Agregar Categoría
           </button>
         </div>

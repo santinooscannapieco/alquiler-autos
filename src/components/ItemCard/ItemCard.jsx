@@ -17,10 +17,10 @@ export const ItemCard = ({ item }) => {
         <div className="px-4 py-3">
           <div>
             <h3 className="text-lg font-semibold mt-2 line-clamp-2">
-              {item.name} {item.id}
+              {item.carBrand} {item.name}
             </h3>
             <p className="mt-2 font-bold text-blue-700">
-              Precio P/H: $ {item.pricePerHour}
+              Precio P/D: $ {item.pricePerHour}
             </p>
           </div>
         </div>

@@ -1,22 +1,33 @@
-import { useState } from "react";
-
-const categories = [
-  { id: 1, type: "Económico" },
-  { id: 2, type: "Estandar" },
-  { id: 3, type: "Intermedio" },
-  { id: 4, type: "De lujo" },
-  { id: 5, type: "Élite" },
-  { id: 6, type: "Premium" },
-  { id: 7, type: "Eléctrico" },
-  { id: 8, type: "Compacto" },
-  { id: 9, type: "Grande" },
-  { id: 10, type: "Descapotable" },
-  { id: 11, type: "Deportivo" },
-  { id: 12, type: "Híbrido" },
-];
+import { useEffect, useState } from "react";
+import { getData } from "../services/api";
+import { useNavigate } from "react-router";
+import useFetch from "../hooks/useFetch";
 
 export const CategoriesComponent = () => {
+  const [categories, setCategories] = useState([]);
   const [viewCategories, setViewCategories] = useState(false);
+  const navigate = useNavigate();
+
+  const loadCategories = async () => {
+    try {
+      const data = await getData(`/categorias`);
+      /* console.log(data); */
+      setCategories(data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const handleClick = (id) => {
+    if (id) {
+      navigate(`/productos/${id}`);
+      console.log(id);
+    }
+  };
 
   return (
     <>
@@ -36,12 +47,15 @@ export const CategoriesComponent = () => {
         `}
         >
           {categories.map((categoria) => (
-            <div
+            <button
               key={categoria.id}
               className="text-md w-[140px] p-5 text-center text-white cursor-pointer hover:bg-gray-800"
+              onClick={() => {
+                handleClick(categoria.id);
+              }}
             >
-              {categoria.type}
-            </div>
+              {categoria.name}
+            </button>
           ))}
         </div>
       </div>

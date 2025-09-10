@@ -8,7 +8,7 @@ export const FooterComponent = () => {
   return (
     <>
       <footer className="">
-        <div className="flex justify-between items-center text-white bg-blue-600 h-[60px] lg:h-[75px] text-lg px-20">
+        <div className="flex justify-between items-center text-white bg-blue-700 h-[60px] lg:h-[75px] text-lg px-20">
           <div className="flex gap-5">
             <p className="text-sm md:text-md lg:text-lg">©2025</p>
             <p className="text-sm md:text-md lg:text-lg">Alquiler Autos</p>

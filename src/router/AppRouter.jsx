@@ -12,6 +12,7 @@ import { AddCategory } from "../components/AddCategory/AddCategory";
 import { ProtectedRoute } from "./ProtectedRoute";
 import NoMobile from "../components/ProtectedAdmin/NoMobile";
 import { ProductList } from "../components/ProductList/ProductList";
+import { ProfilePage } from "../page/ProfilePage";
 
 export const AppRouter = () => {
   return (
@@ -21,11 +22,15 @@ export const AppRouter = () => {
 
         <Routes>
           <Route path="/" element={<IndexPage />}></Route>
+          <Route path="/productos" element={<IndexPage />}></Route>
+          <Route path="/productos/:categoryId" element={<IndexPage />}></Route>
+
           <Route path="/items/:itemId" element={<ProductPage />}></Route>
           <Route
             path="/reservar/:itemId"
             element={<ReservationDetailContainer />}
           ></Route>
+          <Route path="/perfil" element={<ProfilePage />}></Route>
           <Route
             path="/administracion"
             element={

@@ -1,19 +1,17 @@
 import { BtnGoBack } from "../buttons/BtnGoBack";
-import img1 from "../../assets/bmw1.png";
 import { BtnEdit } from "../buttons/BtnEdit";
 import { useEffect, useState } from "react";
 import { getData } from "../../services/api";
 
 export const ReservationDetail = ({ itemId }) => {
   const [producto, setProducto] = useState([]);
-  /* const [category, setCategory] = useState([]); */
+  const [category, setCategory] = useState([]);
 
   const loadProducto = async () => {
     try {
       const data = await getData(`/autos/${itemId}`);
       console.log(data);
       setProducto(data);
-      /* loadCategory(); */
     } catch (err) {
       console.error(err.message);
     }
@@ -23,7 +21,13 @@ export const ReservationDetail = ({ itemId }) => {
     loadProducto();
   }, []);
 
-  /* const loadCategory = async () => {
+  useEffect(() => {
+    if (producto.category_id) {
+      loadCategory();
+    }
+  }, [producto]);
+
+  const loadCategory = async () => {
     // PARA QUE ESTO FUNCIONE FALTA CREAR LA PETICION findById en el back
     try {
       const data = await getData(`/categorias/${producto.category_id}`);
@@ -32,11 +36,11 @@ export const ReservationDetail = ({ itemId }) => {
     } catch (err) {
       console.error(err.message);
     }
-  }; */
+  };
 
   return (
     <>
-      <section className="container lg:mx-auto mx-5 py-30">
+      <section className="section">
         <BtnGoBack backTo={"/"} />
 
         <div className="flex flex-col gap-10">
@@ -92,13 +96,13 @@ export const ReservationDetail = ({ itemId }) => {
                 </div>
                 <div className="flex flex-row justify-between gap-4">
                   <div className="content-center">
-                    <p className="text-lg font-bold">{/* {category.name} */}</p>
-                    <p className="text-md font-semibold">{producto.name}</p>
-                    <p>{producto.carBrand}</p>
+                    <p className="text-lg font-semibold">{producto.name}</p>
+                    <p className="text-lg">{producto.carBrand}</p>
+                    <p className="text-lg font-bold">{category.name}</p>
                   </div>
                   <img
                     className="w-32 xl:w-60 rounded-4xl"
-                    src={img1}
+                    src={producto.imagePaths}
                     alt="img auto"
                   />
                 </div>
@@ -110,7 +114,9 @@ export const ReservationDetail = ({ itemId }) => {
                   </h6>
 
                   {/* Falta multiplicar por cantidad de días */}
-                  <p className="text-2xl font-bold">{producto.pricePerHour}</p>
+                  <p className="text-2xl font-bold">
+                    $ {producto.pricePerHour}
+                  </p>
                 </div>
               </div>
             </div>
